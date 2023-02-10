@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ChequeImport
+from .models import Program
 
 # Register your models here.
-admin.site.register(ChequeImport)
+admin.site.register(Program)
