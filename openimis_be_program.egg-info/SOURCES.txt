@@ -16,3 +16,5 @@ program/serialize.py
 program/tests.py
 program/urls.py
 program/views.py
+program/migrations/0001_initial.py
+program/migrations/__init__.py
