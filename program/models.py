@@ -28,7 +28,7 @@ class Program(models.Model):
         blank=True,
         null=True
     )
-    
+    user = models.ManyToManyField(InteractiveUser)
 
     """ Class Meta :
     Class Meta to define specific table
