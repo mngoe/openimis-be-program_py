@@ -10,6 +10,7 @@ openimis_be_program.egg-info/top_level.txt
 program/__init__.py
 program/admin.py
 program/apps.py
+program/gql_mutations.py
 program/models.py
 program/schema.py
 program/serialize.py
@@ -17,4 +18,5 @@ program/tests.py
 program/urls.py
 program/views.py
 program/migrations/0001_initial.py
+program/migrations/0002_program_user.py
 program/migrations/__init__.py

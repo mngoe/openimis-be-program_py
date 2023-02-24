@@ -5,6 +5,7 @@ from program.models import Program
 import graphene_django_optimizer as gql_optimizer
 from insuree import models as insuree_models
 from policy import models as policy_models
+from .gql_mutations import *
 
 class ProgramGQLType(DjangoObjectType):
     class Meta:
@@ -54,3 +55,8 @@ class Query(graphene.ObjectType):
             intersect = list(set(products_for_program) & set(program_facilies_ids))
             query=query.filter(idProgram__in=intersect)
         return gql_optimizer.query(query.all(), info)
+
+class Mutation(graphene.ObjectType):
+    create_program = CreateProgramMutation.Field()
+    update_program = UpdateProgramMutation.Field()
+    delete_program = DeleteProgramMutation.Field()

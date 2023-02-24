@@ -1,17 +1,11 @@
 """ Model OpenIMIS Be Cheque Santé
 Models of Cameroon Cheque Santé project
 """
-import datetime
-from dataclasses import dataclass
-
-from django.core.exceptions import ValidationError
 from django.db import models
 from core import models as core_models
 from core.models import InteractiveUser
-from django.http import request
-from django.utils import timezone as django_tz 
-import pandas as pd
 import logging
+from django.utils import timezone as django_tz
 
 logger = logging.getLogger(__name__)
 class Program(models.Model):
