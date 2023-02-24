@@ -26,17 +26,18 @@ class Query(graphene.ObjectType):
         services=graphene.List(of_type=graphene.String),
         insureeId=graphene.Int(),
         visitDateFrom=graphene.Date(),
+        hfId=graphene.Int(),
     )
 
     def resolve_program(self, info, **kwargs):
         query = Program.objects
         insuree_id = kwargs.get("insureeId", None)
         visit_date_from = kwargs.get("visitDateFrom", None)
-        if insuree_id and visit_date_from:
-            hfid = info.context.user.health_facility_id
+        hfId = kwargs.get("hfId", None)
+        if insuree_id and visit_date_from and hfId:
             program_facilies_ids = []
             program_facilies = Program.objects.filter(
-                healthfacility=hfid)
+                healthfacility=hfId)
             for program_facility in program_facilies:
                 program_facilies_ids.append(program_facility.idProgram)
 
