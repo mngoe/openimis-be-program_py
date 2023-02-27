@@ -63,6 +63,13 @@ class Query(graphene.ObjectType):
                 program_products_ids.append(prog.idProgram)
             intersect = list(set(program_products_ids) & set(program_facilies_ids))
             query=query.filter(idProgram__in=intersect)
+        else:
+            lst = []
+            program_lst = Program.objects.filter(
+                validityDate__gte=today)
+            for p in program_lst:
+                lst.append(p.idProgram)
+            query=query.filter(idProgram__in=lst)
         return gql_optimizer.query(query.all(), info)
 
 class Mutation(graphene.ObjectType):
