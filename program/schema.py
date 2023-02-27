@@ -1,6 +1,7 @@
 import graphene
 from core import ExtendedConnection, prefix_filterset
 from core.schema import OrderedDjangoFilterConnectionField, DjangoObjectType
+import datetime
 from program.models import Program
 import graphene_django_optimizer as gql_optimizer
 from insuree import models as insuree_models
@@ -35,10 +36,12 @@ class Query(graphene.ObjectType):
         insuree_id = kwargs.get("insureeId", None)
         visit_date_from = kwargs.get("visitDateFrom", None)
         hfId = kwargs.get("hfId", None)
+        today = datetime.datetime.now()
         if insuree_id and visit_date_from and hfId:
             program_facilies_ids = []
             program_facilies = Program.objects.filter(
-                healthfacility=hfId)
+                healthfacility=hfId).filter(
+                validityDate__gte=today)
             for program_facility in program_facilies:
                 program_facilies_ids.append(program_facility.idProgram)
 
@@ -47,12 +50,18 @@ class Query(graphene.ObjectType):
             policies = policy_models.Policy.objects.filter(
                 family_id=family_id).filter(expiry_date__gte=visit_date_from).filter(
                     start_date__lte=visit_date_from).filter(status=2)
-            products_for_program = []
+            program_products_ids = []
+            products_programs = []
             for policy in policies:
                 if policy.product:
                     if policy.product.program_id:
-                        products_for_program.append(policy.product.program_id)
-            intersect = list(set(products_for_program) & set(program_facilies_ids))
+                        products_programs.append(policy.product.program_id)
+            programs_fetch = Program.objects.filter(
+                idProgram__in=products_programs).filter(
+                validityDate__gte=today)
+            for prog in programs_fetch:
+                program_products_ids.append(prog.idProgram)
+            intersect = list(set(program_products_ids) & set(program_facilies_ids))
             query=query.filter(idProgram__in=intersect)
         return gql_optimizer.query(query.all(), info)
 
