@@ -75,7 +75,7 @@ class UpdateProgramMutation(OpenIMISMutation):
 
 class DeleteProgramMutation(OpenIMISMutation):
     """
-    Delete program (update validityDate)
+    Delete program (update validityDateTo)
     """
 
     class Input(ProgramInputType):
@@ -89,8 +89,8 @@ class DeleteProgramMutation(OpenIMISMutation):
         try:
             yesterday = datetime.datetime.now() - datetimedelta(days=1)
             if "nameProgram" in data:
-                data.pop("nameProgram", None)
-            data['validityDate'] = yesterday
+                data.pop("nameProgram")
+            data['validityDateTo'] = yesterday
             update_or_create_program(data, user)
             return None
         except Exception as exc:
