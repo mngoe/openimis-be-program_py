@@ -16,9 +16,14 @@ class Program(models.Model):
         primary_key=True
     )
     nameProgram = models.CharField(db_column='Name', max_length=248)
-    validityDate = models.DateTimeField(
-        'Program Validity Date', 
+    validityDateFrom = models.DateTimeField(
+        'Program Validity Start Date', 
         default=django_tz.now,
+        blank=True,
+        null=True
+    )
+    validityDateTo = models.DateTimeField(
+        'Program Validity End Date',
         blank=True,
         null=True
     )

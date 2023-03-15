@@ -7,6 +7,7 @@ import graphene_django_optimizer as gql_optimizer
 from insuree import models as insuree_models
 from policy import models as policy_models
 from .gql_mutations import *
+from django.db.models import Q
 
 class ProgramGQLType(DjangoObjectType):
     class Meta:
@@ -41,7 +42,8 @@ class Query(graphene.ObjectType):
             program_facilies_ids = []
             program_facilies = Program.objects.filter(
                 healthfacility=hfId).filter(
-                validityDate__lte=today)
+                validityDateFrom__lte=today).filter(
+                Q(validityDateTo__isnull=True) | Q(validityDateTo__gte=today))
             for program_facility in program_facilies:
                 program_facilies_ids.append(program_facility.idProgram)
 
@@ -58,7 +60,8 @@ class Query(graphene.ObjectType):
                         products_programs.append(policy.product.program_id)
             programs_fetch = Program.objects.filter(
                 idProgram__in=products_programs).filter(
-                validityDate__lte=today)
+                validityDateFrom__lte=today).filter(
+                Q(validityDateTo__isnull=True) | Q(validityDateTo__gte=today))
             for prog in programs_fetch:
                 program_products_ids.append(prog.idProgram)
             intersect = list(set(program_products_ids) & set(program_facilies_ids))
@@ -66,7 +69,8 @@ class Query(graphene.ObjectType):
         else:
             lst = []
             program_lst = Program.objects.filter(
-                validityDate__lte=today)
+                validityDateFrom__lte=today).filter(
+                Q(validityDateTo__isnull=True) | Q(validityDateTo__gte=today))
             for p in program_lst:
                 lst.append(p.idProgram)
             query=query.filter(idProgram__in=lst)
