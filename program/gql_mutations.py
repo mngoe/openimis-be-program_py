@@ -9,7 +9,8 @@ from program.models import Program
 class ProgramInputType(OpenIMISMutation.Input):
     idProgram = graphene.String(required=False, read_only=True)
     nameProgram = graphene.String(required=True)
-    validityDate = graphene.Date(required=False)
+    validityDateFrom = graphene.Date(required=False)
+    validityDateTo = graphene.Date(required=False)
     id = graphene.Int(required=False)
 
 def update_or_create_program(data, user):
