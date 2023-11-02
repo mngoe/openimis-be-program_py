@@ -15,6 +15,7 @@ class Program(models.Model):
     idProgram = models.AutoField(
         primary_key=True
     )
+    code = models.CharField(db_column='programCode', max_length=10, blank=True, null=True)
     nameProgram = models.CharField(db_column='Name', max_length=248)
     validityDateFrom = models.DateTimeField(
         'Program Validity Start Date', 
