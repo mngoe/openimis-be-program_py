@@ -14,7 +14,8 @@ class ProgramGQLType(DjangoObjectType):
         model = Program
         interfaces = (graphene.relay.Node,)
         filter_fields = {
-            "nameProgram": ["exact", "icontains"]
+            "nameProgram": ["exact", "icontains"],
+            "code": ["exact", "icontains"]
         }
         connection_class = ExtendedConnection
 
