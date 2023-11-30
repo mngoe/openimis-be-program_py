@@ -12,6 +12,7 @@ class ProgramInputType(OpenIMISMutation.Input):
     validityDateFrom = graphene.Date(required=False)
     validityDateTo = graphene.Date(required=False)
     id = graphene.Int(required=False)
+    code = graphene.String(required=True)
 
 def update_or_create_program(data, user):
     if "client_mutation_id" in data:
